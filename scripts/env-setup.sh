@@ -15,7 +15,7 @@ function check_get_module () {
     fi
 }
 
-if [ "$BIFROST_DOCKER" == "YES" ];
+if [ "$BIFROST_DOCKER" == "YES" ]; then
 	echo "Dependencies already managed by Docker"
 else
 	if [ -x '/usr/bin/apt-get' ]; then

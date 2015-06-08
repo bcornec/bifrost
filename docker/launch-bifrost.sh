@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#env
+#echo "Params: $*"
 cat >> $HOME/.gitconfig << EOF
 [push]
 	default = simple
@@ -10,6 +12,7 @@ cat >> $HOME/.gitconfig << EOF
 	username = bruno-cornec
 EOF
 if [ "$1" != "" ]; then
+	echo "Adding support for http proxy ($1)"
 	export http_proxy=$1
 	cat >> $HOME/.gitconfig << EOF
 [http]
@@ -17,6 +20,7 @@ if [ "$1" != "" ]; then
 EOF
 fi
 if [ "$2" != "" ]; then
+	echo "Adding support for https proxy ($1)"
 	export https_proxy=$2
 	cat >> $HOME/.gitconfig << EOF
 [https]
@@ -28,8 +32,6 @@ export BIFROST_DOCKER=YES
 # Local repo
 git clone https://github.com/bcornec/bifrost.git
 #git clone https://github.com/openstack/bifrost.git
-# Local modifs
-git checkout docker
 
 # Proxy management
 opt=""
@@ -39,6 +41,8 @@ pip install $opt -r bifrost/requirements.txt
 fi
 
 cd bifrost
+# Local modifs
+git checkout docker
 #sed -i 's/aSecretPassword473z/linux1/' playbooks/inventory/group_vars/all
 ./script/env-setup.sh
 source env-vars
