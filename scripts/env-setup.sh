@@ -15,50 +15,55 @@ function check_get_module () {
     fi
 }
 
-if [ -x '/usr/bin/apt-get' ]; then
-    if ! $(gcc -v &>/dev/null); then
-        sudo -H apt-get -y install gcc
-    fi
-    if ! $(git --version &>/dev/null) ; then
-        sudo -H apt-get -y install git
-    fi
-    if ! $(python --version &>/dev/null); then
-        sudo -H apt-get -y install python-minimal
-    fi
-    if ! $(dpkg -l libpython-dev &>/dev/null); then
-        sudo -H apt-get -y install libpython-dev
-    fi
-    if ! $(dpkg -l wget &>/dev/null); then
-        sudo -H apt-get -y install wget
-    fi
-    if [ -n "${VENV-}" ]; then
-        if ! $(virtualenv --version &>/dev/null); then
-            sudo -H apt-get -y install python-virtualenv
-        fi
-    fi
-elif [ -x '/usr/bin/yum' ]; then
-    if ! $(python --version $>/dev/null); then
-        sudo -H yum -y install python
-    fi
-    if ! yum -q list installed python-devel; then
-        sudo -H yum -y install python-devel
-    fi
-    if ! $(gcc -v &>/dev/null); then
-        sudo -H yum -y install gcc
-    fi
-    if ! $(git --version &>/dev/null); then
-        sudo -H yum -y install git
-    fi
-    if ! $(wget --version &>/dev/null); then
-        sudo -H yum -y install wget
-    fi
-    if [ -n "${VENV-}" ]; then
-        if $(virtualenv --version &>/dev/null); then
-            sudo -H yum -y install python-virtualenv
-        fi
-    fi
+if [ "$BIFROST_DOCKER" == "YES" ];
+	echo "Dependencies already managed by Docker"
 else
-    echo "ERROR: Supported package manager not found.  Supported: apt,yum"
+	if [ -x '/usr/bin/apt-get' ]; then
+    	if ! $(gcc -v &>/dev/null); then
+        	sudo -H apt-get -y install gcc
+    	fi
+    	if ! $(git --version &>/dev/null) ; then
+        	sudo -H apt-get -y install git
+    	fi
+    	if ! $(python --version &>/dev/null); then
+        	sudo -H apt-get -y install python-minimal
+    	fi
+    	if ! $(dpkg -l libpython-dev &>/dev/null); then
+        	sudo -H apt-get -y install libpython-dev
+    	fi
+    	if ! $(dpkg -l wget &>/dev/null); then
+        	sudo -H apt-get -y install wget
+    	fi
+    	if [ -n "${VENV-}" ]; then
+        	if ! $(virtualenv --version &>/dev/null); then
+            	sudo -H apt-get -y install python-virtualenv
+        	fi
+    	fi
+	elif [ -x '/usr/bin/yum' ]; then
+    	if ! $(python --version $>/dev/null); then
+        	sudo -H yum -y install python
+    	fi
+    	if ! yum -q list installed python-devel; then
+        	sudo -H yum -y install python-devel
+    	fi
+    	if ! $(gcc -v &>/dev/null); then
+        	sudo -H yum -y install gcc
+    	fi
+    	if ! $(git --version &>/dev/null); then
+        	sudo -H yum -y install git
+    	fi
+    	if ! $(wget --version &>/dev/null); then
+        	sudo -H yum -y install wget
+    	fi
+    	if [ -n "${VENV-}" ]; then
+        	if $(virtualenv --version &>/dev/null); then
+            	sudo -H yum -y install python-virtualenv
+        	fi
+    	fi
+	else
+		echo "ERROR: Supported package manager not found.  Supported: apt,yum"
+	fi
+	sudo -E pip install -r "$(dirname $0)/../requirements.txt"
 fi
 
 if [ -n "${VENV-}" ]; then
@@ -106,10 +111,10 @@ u=$(whoami)
 g=$(groups | awk '{print $1}')
 
 if [ ! -d /opt/stack ]; then
-    mkdir -p /opt/stack || (sudo mkdir -p /opt/stack)
+	mkdir -p /opt/stack || (sudo mkdir -p /opt/stack)
 fi
 sudo -H chown -R $u:$g /opt/stack
-cd /opt/stack
+cd /opt/stackscripts/env-setup.sh
 
 if [ ! -d ansible ]; then
     git clone $ANSIBLE_GIT_URL --recursive -b $ANSIBLE_GIT_BRANCH
