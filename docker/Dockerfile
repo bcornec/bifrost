@@ -11,7 +11,7 @@ RUN apt-get update
 RUN apt-get -y install python-mock git openssh-client libpython2.7-dev python-oslotest  python-pip bash sed sudo libyaml-cpp-dev
 # Optional
 RUN apt-get update
-RUN apt-get -y install vim-runtime strace
+RUN apt-get -y install vim-runtime strace libyaml-dev
 # COnfigure a sngle use to launch operations
 ENV BIFROST_UID bruno
 RUN useradd -m $BIFROST_UID

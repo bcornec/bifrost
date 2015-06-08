@@ -37,8 +37,9 @@ git clone https://github.com/bcornec/bifrost.git
 opt=""
 if [ "$http_proxy" != "" ]; then
 	opt="--proxy $http_proxy"
-pip install $opt -r bifrost/requirements.txt
 fi
+pip install $opt -r bifrost/requirements.txt
+sed -i "s/pip install/pip install $opt" bifrost/playbooks/install.yaml
 
 cd bifrost
 # Local modifs
