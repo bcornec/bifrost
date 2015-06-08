@@ -11,12 +11,11 @@ RUN apt-get -y install python-mock git openssh-client libpython2.7-dev python-os
 RUN apt-get update
 RUN apt-get -y install python-pip bash sed sudo
 RUN apt-get -y install vim-runtime strace
-RUN useradd -m bruno
-RUN chown -R bruno /usr/local
-RUN echo "bruno   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-COPY launch-bifrost.sh /home/bruno/launch-bifrost.sh
-COPY setup-env.sh /home/bruno/setup-env.sh
-RUN chmod 755 /home/bruno/launch-bifrost.sh /home/bruno/setup-env.sh
-ENV BIFROST_DOCKER YES
-RUN su - bruno -c ./launch-bifrost.sh
+ENV BIFROST_UID bruno
+RUN useradd -m $BIFROST_UID
+RUN chown -R $BIFROST_UID /usr/local
+RUN echo "$BIFROST_UID   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+COPY launch-bifrost.sh /home/$BIFROST_UID/launch-bifrost.sh
+RUN chmod 755 /home/$BIFROST_UID/launch-bifrost.sh
+RUN su - $BIFROST_UID -c ./launch-bifrost.sh "$http_proxy" "$https_proxy"
 CMD /bin/bash
