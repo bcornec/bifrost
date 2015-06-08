@@ -44,7 +44,7 @@ cd bifrost
 # Local modifs
 git checkout docker
 #sed -i 's/aSecretPassword473z/linux1/' playbooks/inventory/group_vars/all
-./script/env-setup.sh
+./scripts/env-setup.sh
 source env-vars
 source /opt/stack/ansible/hacking/env-setup
 cd playbooks

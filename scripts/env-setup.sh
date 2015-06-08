@@ -111,7 +111,7 @@ u=$(whoami)
 g=$(groups | awk '{print $1}')
 
 if [ ! -d /opt/stack ]; then
-	mkdir -p /opt/stack || (sudo mkdir -p /opt/stack)
+	mkdir -p /opt/stack 2>/dev/null || (sudo mkdir -p /opt/stack)
 fi
 sudo -H chown -R $u:$g /opt/stack
 cd /opt/stackscripts/env-setup.sh
