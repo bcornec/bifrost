@@ -39,7 +39,7 @@ if [ "$http_proxy" != "" ]; then
 	opt="--proxy $http_proxy"
 fi
 pip install $opt -r bifrost/requirements.txt
-sed -i "s/pip:\(.*\)/pip:\1 extra_args=\'$opt\'/" bifrost/playbooks/roles/ironic-install/tasks/main.yml
+perl -pi -e "s|pip:(.*)|pip:\$1 extra_args=\'$opt\'|" bifrost/playbooks/roles/ironic-install/tasks/main.yml
 grep pip bifrost/playbooks/roles/ironic-install/tasks/main.yml
 
 cd bifrost
