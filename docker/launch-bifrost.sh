@@ -20,7 +20,7 @@ if [ "$1" != "" ]; then
 EOF
 fi
 if [ "$2" != "" ]; then
-	echo "Adding support for https proxy ($1)"
+	echo "Adding support for https proxy ($2)"
 	export https_proxy=$2
 	cat >> $HOME/.gitconfig << EOF
 [https]
@@ -39,13 +39,17 @@ if [ "$http_proxy" != "" ]; then
 	opt="--proxy $http_proxy"
 fi
 pip install $opt -r bifrost/requirements.txt
-perl -pi -e "s|pip:(.*)|pip:\$1 extra_args=\'$opt\'|" bifrost/playbooks/roles/ironic-install/tasks/main.yml
+
+if [ "$http_proxy" != "" ]; then
+	perl -pi -e "s|pip:(.*)|pip:\$1 extra_args=\'$opt\'|" bifrost/playbooks/roles/ironic-install/tasks/main.yml
+fi
+echo "Here are pip options:"
 grep pip bifrost/playbooks/roles/ironic-install/tasks/main.yml
 
 cd bifrost
 # Local modifs
 git checkout docker
-#sed -i 's/aSecretPassword473z/linux1/' playbooks/inventory/group_vars/all
+#perl -pi -e 's/aSecretPassword473z/linux1/' playbooks/inventory/group_vars/all
 ./scripts/env-setup.sh
 source env-vars
 source /opt/stack/ansible/hacking/env-setup
