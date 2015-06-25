@@ -22,5 +22,7 @@ RUN echo "$BIFROST_UID   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN echo 'Defaults    env_keep += "no_proxy http_proxy https_proxy ftp_proxy"' >> /etc/sudoers
 COPY launch-bifrost.sh /home/$BIFROST_UID/launch-bifrost.sh
 RUN chmod 755 /home/$BIFROST_UID/launch-bifrost.sh
-RUN su - $BIFROST_UID -c "./launch-bifrost.sh $http_proxy $https_proxy"
+# Kudos to https://github.com/docker/docker/issues/10324 to have the 
+# possibility to modify /etc/hosts
+RUN echo "127.0.0.1 $HOSTNAME localhost" >> /etc/hosts ; su - $BIFROST_UID -c "./launch-bifrost.sh $http_proxy $https_proxy"
 CMD /bin/bash
