@@ -1,6 +1,6 @@
 # This Dockerfile is to build a container
 # in order to run a standalone Ironic with bifrost
-FROM ubuntu:15.04
+FROM ubuntu:14.04
 MAINTAINER bruno.cornec@hp.com
 # To be launched with docker build . in the dir containing this file
 ENV DEBIAN_FRONTEND noninterative
