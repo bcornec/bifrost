@@ -40,6 +40,8 @@ if [ "$http_proxy" != "" ]; then
 fi
 pip install $opt -r bifrost/requirements.txt
 
+# Local modifs
+git checkout docker
 if [ "$http_proxy" != "" ]; then
 	perl -pi -e "s|pip:(.*)|pip:\$1 extra_args=\'$opt\'|" bifrost/playbooks/roles/ironic-install/tasks/main.yml
 fi
@@ -47,8 +49,6 @@ echo "Here are pip options:"
 grep pip bifrost/playbooks/roles/ironic-install/tasks/main.yml
 
 cd bifrost
-# Local modifs
-git checkout docker
 #perl -pi -e 's/aSecretPassword473z/linux1/' playbooks/inventory/group_vars/all
 ./scripts/env-setup.sh
 source env-vars
