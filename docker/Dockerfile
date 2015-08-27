@@ -8,10 +8,10 @@ ENV DEBIAN_FRONTEND noninterative
 ENV http_proxy http://web-proxy.fra.hp.com:8080
 ENV https_proxy http://web-proxy.fra.hp.com:8080
 RUN apt-get update
-RUN apt-get -y install python-mock git openssh-client libpython2.7-dev python-oslotest  python-pip bash perl sudo libyaml-cpp-dev
+RUN apt-get -y install python-mock git openssh-client libpython2.7-dev python-oslotest  python-pip bash perl sudo libyaml-cpp-dev libyaml-dev
 # Optional
 RUN apt-get update
-RUN apt-get -y install vim-runtime strace libyaml-dev
+RUN apt-get -y install vim-runtime strace
 # COnfigure a sngle use to launch operations
 ENV BIFROST_UID bruno
 RUN useradd -m $BIFROST_UID
