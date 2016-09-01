@@ -198,10 +198,10 @@ to a local ironic installation operating in noauth mode. Run e.g.::
 
   source env-vars
   ironic node-list
-+------+------+---------------+-------------+--------------------+-------------+
-| UUID | Name | Instance UUID | Power State | Provisioning State | Maintenance |
-+------+------+---------------+-------------+--------------------+-------------+
-+------+------+---------------+-------------+--------------------+-------------+
+``+------+------+---------------+-------------+--------------------+-------------+``
+``| UUID | Name | Instance UUID | Power State | Provisioning State | Maintenance |``
+``+------+------+---------------+-------------+--------------------+-------------+``
+``+------+------+---------------+-------------+--------------------+-------------+``
 
 which should print an empty table if connection to Ironic works as expected.
 
